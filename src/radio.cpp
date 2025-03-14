@@ -532,6 +532,7 @@ bool Radio::generateModeRegister() {
 			NRF_RADIO->MODE = (RADIO_MODE_MODE_Ble_1Mbit << RADIO_MODE_MODE_Pos);
 			break;
 		case DOT15D4_WAZABEE:
+			break;
 		case BLE_2MBITS:
 			NRF_RADIO->MODE = (RADIO_MODE_MODE_Ble_2Mbit << RADIO_MODE_MODE_Pos);
 			break;
@@ -991,6 +992,8 @@ bool Radio::send(uint8_t *data,int size,int frequency, uint8_t channel) {
 }
 
 static uint8_t jamBuffer[] = {0x55,0x55,0x55,0x55};
+
+// the IRQ for send and receive the data
 extern "C" void RADIO_IRQHandler(void) {
 
 	if (NRF_RADIO->EVENTS_READY) {

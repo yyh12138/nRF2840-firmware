@@ -104,6 +104,7 @@ void Core::sendMessage(Message *msg) {
 	delete msg;
 }
 
+// handle the cmd from PC
 void Core::handleCommand(Command *cmd) {
 	if (cmd->getCommandType() == GET_VERSION) {
 		this->pushMessageToQueue(new GetVersionResponse(VERSION_MAJOR,VERSION_MINOR));
@@ -195,11 +196,13 @@ void Core::handleCommand(Command *cmd) {
 				this->bleController->setAttackPayload(parameters.getPayloadContent(),parameters.getPayloadSize());
 				this->pushMessageToQueue(new SendPayloadResponse(0x00,true));
 			}
+			// communicate as a master
 			else if (parameters.getPayloadDirection() == 0x01) {
 				if (this->bleController->isMasterPayloadTransmitted()) {
 					this->bleController->setMasterPayload(parameters.getPayloadContent(),parameters.getPayloadSize());
 				}
 			}
+			// communicate as a slave
 			else if (parameters.getPayloadDirection() == 0x02) {
 				if (this->bleController->isMasterPayloadTransmitted()) {
 					this->bleController->setSlavePayload(parameters.getPayloadContent(),parameters.getPayloadSize());
