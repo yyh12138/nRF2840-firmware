@@ -10,20 +10,15 @@ int BLEController::channelToFrequency(int channel) {
 	else freq = 2*(channel+3);
 	return freq;
 }
-
 BLEController::BLEController(Radio *radio) : Controller(radio) {
 	this->timeModule = Core::instance->getTimeModule();
 }
-
 void BLEController::setFollowMode(bool follow) {
 	this->follow = follow;
 }
-
 void BLEController::setEmptyTransmitIndicator(bool emptyTransmitIndicator) {
 	this->emptyTransmitIndicator = emptyTransmitIndicator;
 }
-
-
 int BLEController::getChannel() {
 	return this->channel;
 }
@@ -32,13 +27,11 @@ void BLEController::setChannel(int channel) {
 	this->channel = channel;
 	this->radio->fastFrequencyChange(BLEController::channelToFrequency(channel),channel);
 }
-
 void BLEController::updateHopInterval(uint16_t hopInterval) {
 	// This method update the hop interval in use
 	this->hopInterval = hopInterval;
 	this->timeModule->setBLEHopInterval(hopInterval);
 }
-
 void BLEController::updateHopIncrement(uint8_t hopIncrement) {
 	// This method update the hop increment in use
 	this->hopIncrement = hopIncrement;
@@ -97,7 +90,6 @@ void BLEController::clearConnectionUpdate() {
 	this->connectionUpdate.channelMap[3] = 0;
 	this->connectionUpdate.channelMap[4] = 0;
 }
-
 void BLEController::prepareConnectionUpdate(uint16_t instant, uint16_t hopInterval, uint8_t windowSize, uint8_t windowOffset,uint16_t latency) {
 	this->connectionUpdate.type = UPDATE_TYPE_CONNECTION_UPDATE_REQUEST;
 	this->connectionUpdate.instant = instant;
@@ -126,17 +118,14 @@ void BLEController::updateMasterSequenceNumbers(uint8_t sn, uint8_t nesn) {
 	this->masterSequenceNumbers.sn = sn;
 	this->masterSequenceNumbers.nesn = nesn;
 }
-
 void BLEController::updateSlaveSequenceNumbers(uint8_t sn, uint8_t nesn) {
 	this->slaveSequenceNumbers.sn = sn;
 	this->slaveSequenceNumbers.nesn = nesn;
 }
-
 void BLEController::updateSimulatedMasterSequenceNumbers(uint8_t sn, uint8_t nesn) {
 	this->simulatedMasterSequenceNumbers.sn = sn;
 	this->simulatedMasterSequenceNumbers.nesn = nesn;
 }
-
 void BLEController::updateSimulatedSlaveSequenceNumbers(uint8_t sn, uint8_t nesn) {
 	this->simulatedSlaveSequenceNumbers.sn = sn;
 	this->simulatedSlaveSequenceNumbers.nesn = nesn;
@@ -165,7 +154,6 @@ void BLEController::setAttackPayload(uint8_t *payload, size_t size) {
 	}
 	this->attackStatus.size = size;
 }
-
 void BLEController::setSlavePayload(uint8_t *payload, size_t size) {
 	for (size_t i=0;i<size;i++) {
 		this->slavePayload.payload[i] = payload[i];
@@ -173,7 +161,6 @@ void BLEController::setSlavePayload(uint8_t *payload, size_t size) {
 	this->slavePayload.size = size;
 	this->slavePayload.transmitted = false;
 }
-
 void BLEController::setMasterPayload(uint8_t *payload, size_t size) {
 	for (size_t i=0;i<size;i++) {
 		this->masterPayload.payload[i] = payload[i];
@@ -277,7 +264,6 @@ bool BLEController::whitelistInitAddress(bool enable,uint8_t a, uint8_t b, uint8
 	}
 	return false;
 }
-
 
 bool BLEController::whitelistConnection(bool enable,uint8_t a, uint8_t b, uint8_t c,uint8_t d, uint8_t e, uint8_t f,uint8_t ap, uint8_t bp, uint8_t cp,uint8_t dp, uint8_t ep, uint8_t fp) {
 	if (this->controllerState == JAMMING_CONNECT_REQ) {
@@ -480,7 +466,6 @@ bool BLEController::isSlavePayloadTransmitted() {
 bool BLEController::isMasterPayloadTransmitted() {
 	return this->masterPayload.transmitted;
 }
-
 void BLEController::executeAttack() {
 	if (this->attackStatus.running && !this->attackStatus.successful) {
 		TimeModule::instance->startBLEInjection();
@@ -633,8 +618,6 @@ void BLEController::enterSlaveMode() {
 	this->radio->enableAutoTXafterRX();
 	this->radio->reload();
 }
-
-
 void BLEController::exitSlaveMode() {
 	this->radio->setFastRampUpTime(true);
 	this->radio->setInterFrameSpacing(0);
@@ -643,7 +626,6 @@ void BLEController::exitSlaveMode() {
 }
 
 bool BLEController::inject() {
-
 	if (this->attackStatus.attack != BLE_ATTACK_NONE) {
 		if (!this->attackStatus.injecting) {
 			uint8_t *payload = (uint8_t *)malloc(sizeof(uint8_t) * this->attackStatus.size);
@@ -661,14 +643,24 @@ bool BLEController::inject() {
 	}
 	return false;
 }
+
+void sendBLEAdv() {
+	uint8_t *payload = (uint8_t *)malloc(sizeof(uint8_t) * this->attackStatus.size);
+	for (size_t i=0;i<this->attackStatus.size;i++) payload[i] = this->attackStatus.payload[i];
+	this->setChannel(37);
+	this->updateSlaveSequenceNumbers(0, 0);
+	payload[0] = (payload[0] & 0xF3) | (((this->slaveSequenceNumbers.sn+1)%2) << 2)|(this->slaveSequenceNumbers.nesn << 3);
+	this->radio->send(payload,this->attackStatus.size,BLEController::channelToFrequency(this->channel),this->channel);
+	Core::instance->getLedModule()->toggle(LED2);
+	free(payload);
+}
+
 void BLEController::sendInjectionReport(bool status, uint32_t injectionCount) {
 	Core::instance->pushMessageToQueue(new InjectionReportNotification(status, injectionCount));
 }
-
 void BLEController::sendAdvIntervalReport(uint32_t interval) {
 	Core::instance->pushMessageToQueue(new AdvIntervalReportNotification(interval));
 }
-
 void BLEController::sendConnectionReport(ConnectionStatus status) {
 	Core::instance->pushMessageToQueue(new ConnectionNotification(status));
 }

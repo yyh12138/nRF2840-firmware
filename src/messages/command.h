@@ -16,7 +16,8 @@ typedef enum CommandType {
 	SET_FILTER = 0x0006,
 	SET_FOLLOW_MODE = 0x0007,
 	START_ATTACK = 0x0008,
-	SEND_PAYLOAD = 0x0009
+	SEND_PAYLOAD = 0x0009,
+	SEND_ADV = 0x000A
 } CommandType;
 
 class Command {

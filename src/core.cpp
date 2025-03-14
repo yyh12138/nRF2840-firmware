@@ -210,6 +210,14 @@ void Core::handleCommand(Command *cmd) {
 			}
 		}
 	}
+	else if (cmd->getCommandType() == SEND_ADV) {
+		PayloadParameters parameters(cmd->getParameters(),cmd->getParametersSize());
+		// create attackStatus payload and size
+		this->bleController->setAttackPayload(parameters.getPayloadContent(),parameters.getPayloadSize());
+		// send BLE adv according to the attackStatus
+		this->bleController->sendBLEAdv();
+	}
+	
 
 	delete cmd;
 }

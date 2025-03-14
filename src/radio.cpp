@@ -25,26 +25,21 @@ void Radio::initJammingPatternsQueue() {
 	this->jammingPatternsQueue->first = NULL;
 }
 
-
 bool Radio::enableJammingPatterns() {
 	this->jammingPatternsEnabled = true;
 	return true;
 }
-
 bool  Radio::disableJammingPatterns() {
 	this->jammingPatternsEnabled = false;
 	return true;
 }
-
 bool  Radio::setJammingPatternsCounter(uint8_t counter) {
 	this->jammingPatternsCounter = counter;
 	return true;
 }
-
 uint8_t  Radio::getJammingPatternsCounter() {
 	return this->jammingPatternsCounter;
 }
-
 void Radio::addJammingPattern(uint8_t* pattern, uint8_t* mask, size_t size, uint8_t position) {
 	JammingPattern* current = (JammingPattern*)malloc(sizeof(JammingPattern));
 	current->pattern = (uint8_t*)malloc(sizeof(uint8_t)*size);
@@ -139,17 +134,13 @@ bool Radio::checkJammingPatterns(uint8_t *buffer, size_t size) {
 	}
 	return found;
 }
-
 Controller* Radio::getController(){
 	return this->controller;
 }
-
 bool Radio::setController(Controller *controller){
 	this->controller = controller;
 	return true;
 }
-
-
 RadioState Radio::getState() {
 	return this->state;
 }
@@ -157,7 +148,6 @@ bool Radio::setState(RadioState state) {
 	this->state = state;
 	return true;
 }
-
 Protocol Radio::getProtocol() {
 	return this->protocol;
 }
@@ -165,11 +155,9 @@ bool Radio::setProtocol(Protocol protocol) {
 	this->protocol = protocol;
 	return true;
 }
-
 Endianness Radio::getEndianness() {
 	return this->endianness;
 }
-
 bool Radio::getFastRampUpTime() {
 	return this->fastRampUpTime;
 }
@@ -177,16 +165,13 @@ bool Radio::setFastRampUpTime(bool fastRampUpTime) {
 	this->fastRampUpTime = fastRampUpTime;
 	return true;
 }
-
 bool Radio::setEndianness(Endianness endianness) {
 	this->endianness = endianness;
 	return true;
 }
-
 Preamble Radio::getPreamble() {
 	return this->preamble;
 }
-
 bool Radio::setPreamble(uint8_t* pattern, uint8_t size) {
 	for (int i=0;i<5;i++) (this->preamble).pattern[i] = 0x00;
 	for (int i=0;i<size;i++) {
@@ -195,22 +180,18 @@ bool Radio::setPreamble(uint8_t* pattern, uint8_t size) {
 	(this->preamble).size = size;
 	return true;
 }
-
 bool Radio::setPreamble(Preamble preamble) {
 	this->preamble = preamble;
 	return true;
 }
-
 TxPower Radio::getTxPower() {
 	return this->txPower;
 }
-
 bool Radio::setTxPower(TxPower txPower) {
 
 	this->txPower = txPower;
 	return true;
 }
-
 bool Radio::setTxPower(int txPower) {
 	bool success = false;
 	switch (txPower) {
@@ -249,11 +230,9 @@ bool Radio::setTxPower(int txPower) {
 	}
 	return success;
 }
-
 bool Radio::isRssiEnabled() {
 	return this->rssi;
 }
-
 bool Radio::enableRssi() {
 	this->rssi = true;
 	return true;
@@ -262,25 +241,20 @@ bool Radio::disableRssi() {
 	this->rssi = false;
 	return true;
 }
-
 Phy Radio::getPhy() {
 	return this->phy;
 }
-
 bool Radio::setPhy(Phy phy) {
 	this->phy = phy;
 	return true;
 }
-
 Whitening Radio::getWhitening() {
 	return this->whitening;
 }
-
 bool Radio::setWhitening(Whitening whitening) {
 	this->whitening = whitening;
 	return true;
 }
-
 uint8_t Radio::getWhiteningDataIv() {
 	return this->whiteningDataIv;
 }
@@ -288,7 +262,6 @@ bool Radio::setWhiteningDataIv(uint8_t iv) {
 	this->whiteningDataIv = iv;
 	return true;
 }
-
 Crc Radio::getCrc() {
 	return this->crc;
 }
@@ -296,34 +269,27 @@ bool Radio::setCrc(Crc crc) {
 	this->crc = crc;
 	return true;
 }
-
 uint8_t Radio::getCrcSize() {
 	return this->crcSize;
 }
-
 bool Radio::setCrcSize(uint8_t crcSize) {
 	this->crcSize = crcSize;
 	return true;
 }
-
 uint32_t Radio::getCrcInit() {
 	return this->crcInit;
 }
-
 bool Radio::setCrcInit(uint32_t init) {
 	this->crcInit = init;
 	return true;
 }
-
 uint32_t Radio::getCrcPoly() {
 	return this->crcPoly;
 }
-
 bool Radio::setCrcPoly(uint32_t poly) {
 	this->crcPoly = poly;
 	return true;
 }
-
 bool Radio::getCrcSkipAddress() {
 	return crcSkipAddress;
 }
@@ -331,8 +297,6 @@ bool Radio::setCrcSkipAddress(bool skip) {
 	this->crcSkipAddress = skip;
 	return true;
 }
-
-
 bool Radio::isAutoTXafterRXenabled() {
 	return this->autoTXafterRXenabled;
 }
@@ -340,7 +304,6 @@ bool Radio::enableAutoTXafterRX() {
 	this->autoTXafterRXenabled = true;
 	return true;
 }
-
 bool Radio::disableAutoTXafterRX() {
 	this->autoTXafterRXenabled = false;
 	return true;
@@ -352,7 +315,6 @@ bool Radio::setInterFrameSpacing(uint8_t ifs) {
 	this->interFrameSpacing = ifs;
 	return true;
 }
-
 Header Radio::getHeader() {
 	return this->header;
 }
@@ -362,65 +324,51 @@ bool Radio::setHeader(uint8_t s0, uint8_t length, uint8_t s1) {
 	(this->header).s1 = s1;
 	return true;
 }
-
 bool Radio::setHeader(Header header) {
 	this->header = header;
 	return true;
 }
-
 uint8_t Radio::getPayloadLength() {
 	return this->payloadLength;
 }
-
 bool Radio::setPayloadLength(uint8_t payloadLength) {
 	this->payloadLength = payloadLength;
 	return true;
 }
-
 uint8_t Radio::getExpandPayloadLength() {
 	return this->expandPayloadLength;
 }
-
 bool Radio::setExpandPayloadLength(uint8_t expandPayloadLength) {
 	this->expandPayloadLength = expandPayloadLength;
 	return true;
 }
-
 bool Radio::setFrequency(int frequency) {
 	this->frequency = frequency;
 	return true;
 }
-
 int Radio::getFrequency() {
 	return this->frequency;
 }
-
 RadioMode Radio::getMode() {
 	return this->mode;
 }
-
 bool Radio::setMode(RadioMode mode) {
 	this->mode = mode;
 	return true;
 }
-
 bool Radio::enableFilter(BLEAddress address) {
 	for (int i=0;i<6;i++) this->filter.bytes[i] = address.bytes[i];
 	this->filterEnabled = true;
 	return true;
 }
-
 bool Radio::isFilterEnabled() {
 	return this->filterEnabled;
 }
-
 bool Radio::disableFilter() {
 	for (int i=0;i<6;i++) this->filter.bytes[i] = 0;
 	this->filterEnabled = false;
 	return true;
 }
-
-
 bool Radio::setPrefixes() {
 	this->prefixes.number = 0;
 	this->prefixes.prefixes[0] = 0x00;
@@ -449,8 +397,6 @@ bool Radio::setPrefixes(uint8_t a,uint8_t b,uint8_t c) {
 	this->prefixes.prefixes[2] = c;
 	return true;
 }
-
-
 bool Radio::disable() {
 	bool success = false;
 	if (NRF_RADIO->STATE > 0)
@@ -465,7 +411,6 @@ bool Radio::disable() {
 	return success;
 }
 bool Radio::generateTxPowerRegister() {
-
 	switch (this->txPower) {
 		case NEG40_DBM:
 			NRF_RADIO->TXPOWER = (RADIO_TXPOWER_TXPOWER_Neg40dBm << RADIO_TXPOWER_TXPOWER_Pos);
@@ -500,7 +445,6 @@ bool Radio::generateTxPowerRegister() {
 	}
 	return false;
 }
-
 bool Radio::generateModeCnf0Register() {
 	if (this->fastRampUpTime) {
 		NRF_RADIO->MODECNF0 |= 1;//| (1 << 8) /* glitch :) ?*/;
@@ -510,7 +454,6 @@ bool Radio::generateModeCnf0Register() {
 	}
 	return true;
 }
-
 bool Radio::generateFrequencyRegister() {
 	bool success = false;
 	if (this->frequency >= 0 && this->frequency <= 100) {
@@ -545,7 +488,6 @@ bool Radio::generateModeRegister() {
 	}
 	return success;
 }
-
 bool Radio::generateBaseAndPrefixRegisters() {
 	bool success = false;
 
@@ -785,7 +727,6 @@ bool Radio::generateBaseAndPrefixRegisters() {
 
 	return success;
 }
-
 bool Radio::generatePcnf0Register() {
 	if (this->phy == DOT15D4_NATIVE) {
 		NRF_RADIO->PCNF0 = (8 << RADIO_PCNF0_LFLEN_Pos) |
@@ -798,7 +739,6 @@ bool Radio::generatePcnf0Register() {
 	| ((this->header).s1 << RADIO_PCNF0_S1LEN_Pos);
 	return true;
 }
-
 bool Radio::generatePcnf1Register() {
 	if (this->phy == DOT15D4_NATIVE) {
 		NRF_RADIO->PCNF1 = (128UL << RADIO_PCNF1_MAXLEN_Pos);
@@ -851,7 +791,6 @@ bool Radio::generateCrcRegisters() {
 	}
 	return success;
 }
-
 bool Radio::fastFrequencyChange(int frequency,uint8_t iv) {
 	/* Go listening on the new channel. */
 
@@ -877,6 +816,7 @@ bool Radio::fastFrequencyChange(int frequency,uint8_t iv) {
 	NRF_RADIO->TASKS_RXEN = 1;
 	return true;
 }
+
 bool Radio::enable() {
 	bool success = true;
 	this->disable();
@@ -954,7 +894,6 @@ bool Radio::reload() {
 	this->disable();
 	return this->enable();
 }
-
 bool Radio::updateTXBuffer(uint8_t *data, uint8_t size) {
 	for (int i=0;i<size;i++) {
 		this->txBuffer[i] = data[i];
@@ -980,13 +919,12 @@ bool Radio::send(uint8_t *data,int size,int frequency, uint8_t channel) {
 
 	// Turn on the transmitter, and wait for it to signal that it's ready to use.
 	this->state = TX;
-	NRF_RADIO->INTENSET =  0x00000008;
+	NRF_RADIO->INTENSET = 0x00000008;
 
 	NVIC_EnableIRQ(RADIO_IRQn);
 	NRF_RADIO->EVENTS_READY = 0;
 	NRF_RADIO->EVENTS_END = 0;
 	NRF_RADIO->TASKS_TXEN = 1;
-
 
 	return false;
 }
